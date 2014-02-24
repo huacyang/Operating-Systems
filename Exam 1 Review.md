@@ -97,6 +97,79 @@ __Moving data to/from devices__ : Programmed I/O or DMA
 * `Programmed I/O` data can be transferred between the device and system via software that reads/writes the device's memory.
 * `Direct Memory Access` transfer data to/from system memory without using the processor.
 
+Processes
+===
 
+__Program__ vs __Process__
+* `Program` static code and static data
+* `Process` dynamic instance of code and data
+
+__Memory Map__
+* `text` the machine instructions
+* `data` initialized static and global data
+* `bss` uninitialized static data that was defined in the program
+* `heap` dynamically allocated memory (obtained through memory allocation requests)
+* `stack` the call stack, which holds not just return addresses but also local variables, temporary data, and saved registers
+
+__Process States__
+* `Ready`
+* `Running`
+* `Blocked`
+* `Zombie`
+* `Transitions`
+
+__Preemptive Multitasking__  
+A system where the operating system can save the context of a running program and restore the context of a ready program to give it a chance to run.
+
+__Non-preemptive System__  
+A system that allow program to run until it terminates or blocks on I/O.
+
+__Process Control Block__ (PCB) 
+It stores the following:
+	* _Machine state_
+	* _Process state_
+	* _Memory map_
+	* _Process ID_
+
+__Process List__ : Keeps track of PCB's
+
+__Creating a process under UNIX with fork__ : It creates a copy of the parent
+
+Threads
+===
+
+__Thread__ vs __Process__
+* A `process` is an executing program.
+* A `thread` is the basic unit to which the operating system allocates processor time.
+
+__What do threads in a process share?__  
+The `stacks` that reside within memory is accessible to all threads within the process.
+
+__Thread Control Block__ (TCB)  
+Stores `thread-specific` information
+	* _Registers_
+	* _Program Counter_
+	* _Stack Pointer_
+	* _Priority_
+
+__Kernel-level__ vs __User-level__ threads
+* Kernel-level
+	* `Advantages` Takes advantage of multiprocessors
+	* `Disadvantages` More overhead due to mode switching from _user to kernel mode_
+* User-level
+	* `Advantages` Can be more efficient than kernel-level threads since there is no need to even do a mode switch into the kernel.
+	* `Disadvantages` If one thread blocks on a system call, then the entire process is blocked and no threads within that process get to run.
+
+__Hybrid Kernel/User Mode__  
+* Threading models can be combined and user-level thread libraries can be used with operating systems that offer kernel threads.
+* Maps `N` user-level threads onto `M` kernel-level threads.
+
+__Join__ vs __Fork/Wait__
+* `Wait` A parent process waits for the termination of a child process.
+* `Join` Any on thread within a process can wait for any other thread to terminate.
+* There is _NO_ parent-child relationship in threads. 
+
+Synchronization
+===
 
 
