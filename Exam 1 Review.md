@@ -14,7 +14,7 @@ __Preemption__ : The system may stop one process from executing and starts anoth
 __Operating System__ : What does it do?
 * It is a program that loads and runs other programs.
 * It provides programs with a level of abstraction so they don't have to deal with the details of accessing hardware.
-* It manages access to resource, including the `CPU` (via the scheduler), `memory` (via the memory management unit), `persistent files` (via the file system), `communications network` (via sockets and IP drivers), and `devices` (via device drivers).
+* It manages access to resource, including the `CPU` (via the _scheduler_), `memory` (via the _memory management unit_), `persistent files` (via the _file system_), `communications network` (via _sockets_ and _IP drivers_), and `devices` (via _device drivers_).
 
 __Mechanism__ versus __Policy__
 * A `Mechanism` is the presentation of a software abstraction: the functional interface. It defines _how to do something_.
@@ -31,17 +31,17 @@ __Multi-stage Boot Loader__ : Starts off with a simple boot loader that then loa
 __What the BIOS does__
 * Performs a _power-on test_
 * _identifies and initializes_ some hardware
-* Loads the _first block_ (MBR) of the disk
+* Loads the _first block_ (_MBR_) of the disk
 
-__Master Boot Record__ (MBR)
+__Master Boot Record__ (_MBR_)
 * Contains a boot loader that loads the volume boot loader from a disk partition.
 * MBR contains the stage 1 loader that then loads the stage 2 loader, which then loads the `Operating System` (or gives you a choice).
 
-__Volume Boot Record__ (VBR)
+__Volume Boot Record__ (_VBR_)
 * The _first disk block_ of the designated boot partition
 * Present user with a choice of operating systems to load
 
-__Universal Extensible Firmware Interface__ (EFI)
+__Universal Extensible Firmware Interface__ (_EFI_)
 * A successor to the BIOS
 * Has a built-in boot manager that usually loads an OS loader without going through a two-stage process.
 
@@ -53,13 +53,13 @@ __Monolithic__ vs __Modular__ vs __Microkernel__ structures
 * A `Loadable Kernel Module` is an object file that contains code to extend the running kernel of an operating system.
 * A `Microkernel` is an operating system that provides just the bare essential mechanisms that are necessary to interact with the hardware and manage threads and memory.
 
-__User Mode__ (Privileged) vs __Kernel Mode__ (Supervisor)
+__User Mode__ (_Privileged_) vs __Kernel Mode__ (_Supervisor_)
 * Programs other than the kernel run with the processor in `user mode` and do not have privileges to execute these instructions.
 * The operating system runs with the processor in `kernel mode`.
 
-__Getting from user to kernel mode and back again__ : A processor running in `user mode` can switch to kernel mode by executing a `trap` instruction (`software interrupt`).
+__Getting from user to kernel mode and back again__ : A processor running in `user mode` can switch to kernel mode by executing a `trap` instruction (_software interrupt_).
 
-__Traps__ (Software Interrupts)
+__Traps__ (_Software Interrupts_)
 * `INT` a legacy way to invoke a system call and should be avoided
 * `SYSCALL` explicit instructions, which is a faster mechanism since it does not need to read the branch address from a `interrupt vector table` that is stored in memory but keeps the address in a CPU register.
 
@@ -78,7 +78,7 @@ It comprises the state of the processor's registers and the `memory map` for the
 
 __Device type__ : Character, Block, and Network
 * `Character Devices` any device whose data that can be thought of as a byte stream. This includes keyboard input, mouse movements, printer output, camera inputs, etc.
-* `Block Devices` any device that has persistent storage that is randomly addressable and read or written in fixed-size chunks (blocks). These devices include disks and flash memory. Because the data is persistent and addressable, it can be cached by the operating system so that future requests for cached content may be satisfied from system memory instead of accesssing the device again. This cache of frequently-used blocks of data is called the `buffer cache`. Basically, any device that can be used to hold a file system is a block device. 
+* `Block Devices` any device that has persistent storage that is randomly addressable and read or written in fixed-size chunks (_blocks_). These devices include disks and flash memory. Because the data is persistent and addressable, it can be cached by the operating system so that future requests for cached content may be satisfied from system memory instead of accesssing the device again. This cache of frequently-used blocks of data is called the `buffer cache`. Basically, any device that can be used to hold a file system is a block device. 
 * `Network Devices` packet-based communications networks.
 
 __Interacting with Devices__ : Memory Mapped I/O
@@ -124,7 +124,7 @@ A system where the operating system can save the context of a running program an
 __Non-preemptive System__  
 A system that allow program to run until it terminates or blocks on I/O.
 
-__Process Control Block__ (PCB) 
+__Process Control Block__ (_PCB_) 
 It stores the following:
 	* _Machine state_
 	* _Process state_
@@ -145,7 +145,7 @@ __Thread__ vs __Process__
 __What do threads in a process share?__  
 The `stacks` that reside within memory is accessible to all threads within the process.
 
-__Thread Control Block__ (TCB)  
+__Thread Control Block__ (_TCB_)  
 Stores `thread-specific` information
 	* _Registers_
 	* _Program Counter_
