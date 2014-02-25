@@ -57,15 +57,16 @@ __User Mode__ (_Privileged_) vs __Kernel Mode__ (_Supervisor_)
 * Programs other than the kernel run with the processor in `user mode` and do not have privileges to execute these instructions.
 * The operating system runs with the processor in `kernel mode`.
 
-__Getting from user to kernel mode and back again__ : A processor running in `user mode` can switch to kernel mode by executing a `trap` instruction (_software interrupt_).
+__Getting from user to kernel mode and back again__  
+A processor running in `user mode` can switch to kernel mode by executing a `trap` instruction (_software interrupt_).
 
 __Traps__ (_Software Interrupts_)
-* `INT` a legacy way to invoke a system call and should be avoided
-* `SYSCALL` explicit instructions, which is a faster mechanism since it does not need to read the branch address from a `interrupt vector table` that is stored in memory but keeps the address in a CPU register.
+* `INT` - a legacy way to invoke a system call and should be avoided
+* `SYSCALL` - explicit instructions, which is a faster mechanism since it does not need to read the branch address from a `interrupt vector table` that is stored in memory but keeps the address in a CPU register.
 
 __System Calls__ : a system call uses the `trap` mechanism to switch control to operating system code running in kernel mode.
 
-__Programmable Interval Timer Interrupts__ : Why do you need them? 
+__Programmable Interval Timer Interrupts__ (_PIT_) : Why do you need them? 
 * To allow the operating system to get control at regular intervals.
 * Generate periodic hardware interrupts (i.e. every 10ms).
 
@@ -77,44 +78,46 @@ __What's involved in saving process state?__
 It comprises the state of the processor's registers and the `memory map` for the program. 
 
 __Device type__ : Character, Block, and Network
-* `Character Devices` any device whose data that can be thought of as a byte stream. This includes keyboard input, mouse movements, printer output, camera inputs, etc.
-* `Block Devices` any device that has persistent storage that is randomly addressable and read or written in fixed-size chunks (_blocks_). These devices include disks and flash memory. Because the data is persistent and addressable, it can be cached by the operating system so that future requests for cached content may be satisfied from system memory instead of accesssing the device again. This cache of frequently-used blocks of data is called the `buffer cache`. Basically, any device that can be used to hold a file system is a block device. 
-* `Network Devices` packet-based communications networks.
+* `Character Devices` - any device whose data that can be thought of as a byte stream. This includes keyboard input, mouse movements, printer output, camera inputs, etc.
+* `Block Devices` - any device that has persistent storage that is randomly addressable and read or written in fixed-size chunks (_blocks_). These devices include disks and flash memory. Because the data is persistent and addressable, it can be cached by the operating system so that future requests for cached content may be satisfied from system memory instead of accesssing the device again. This cache of frequently-used blocks of data is called the `buffer cache`. Basically, any device that can be used to hold a file system is a block device. 
+* `Network Devices` - packet-based communications networks.
 
 __Interacting with Devices__ : Memory Mapped I/O
 * Exists within a `process`
 * Creates and initializes the following when first created:
-	* `text` the machine instructions
-	* `data` initialized static and global data
-	* `bss` uninitialized static data that was defined in the program
-	* `heap` dynamically allocated memory (obtained through memory allocation requests)
-	* `stack` the call stack, which holds not just return addresses but also local variables, temporary data, and saved registers
+	* `text` - the machine instructions
+	* `data` - initialized static and global data
+	* `bss` - uninitialized static data that was defined in the program
+	* `heap` - dynamically allocated memory (obtained through memory allocation requests)
+	* `stack` - the call stack, which holds not just return addresses but also local variables, temporary data, and saved registers
 
-__Getting status from devices__ : Interrupts and Polling 
+__Getting status from devices__ : Interrupts and Polling  
 The processor can get device status notifications either via a `hareware interrupt` or by `periodically polling` the hardware.
+* Use interrupts when the event of interest is `asynchronous`, `urgent`, and `infrequent`.
+* Use polling when the event of interest is `synchronous`, `not urgent`, and `frequent`.
 
 __Moving data to/from devices__ : Programmed I/O or DMA
-* `Programmed I/O` data can be transferred between the device and system via software that reads/writes the device's memory.
-* `Direct Memory Access` transfer data to/from system memory without using the processor.
+* `Programmed I/O` - data can be transferred between the device and system via software that reads/writes the device's memory.
+* `Direct Memory Access` - transfer data to/from system memory without using the processor.
 
 Processes
 ===
 
 __Program__ vs __Process__
-* `Program` static code and static data
-* `Process` dynamic instance of code and data
+* `Program` - static code and static data
+* `Process` - dynamic instance of code and data
 
 __Memory Map__
-* `text` the machine instructions
-* `data` initialized static and global data
-* `bss` uninitialized static data that was defined in the program
-* `heap` dynamically allocated memory (obtained through memory allocation requests)
-* `stack` the call stack, which holds not just return addresses but also local variables, temporary data, and saved registers
+* `text` - the machine instructions
+* `data` - initialized static and global data
+* `bss` - uninitialized static data that was defined in the program
+* `heap` - dynamically allocated memory (obtained through memory allocation requests)
+* `stack` - the call stack, which holds not just return addresses but also local variables, temporary data, and saved registers
 
 __Process States__
-* `Ready`
-* `Running`
-* `Blocked`
+* `Ready` - the process is not currently executing code on the CPU
+* `Running` - the process is currently executing code on the CPU
+* `Blocked` - the process is waiting for some event to occur
 * `Zombie`
 * `Transitions`
 
@@ -145,31 +148,52 @@ __Thread__ vs __Process__
 __What do threads in a process share?__  
 The `stacks` that reside within memory is accessible to all threads within the process.
 
-__Thread Control Block__ (_TCB_)  
-Stores `thread-specific` information
-	* _Registers_
-	* _Program Counter_
-	* _Stack Pointer_
-	* _Priority_
+__Thread Control Block__ (_TCB_)   
+Stores `thread-specific` information:
+* _Registers_
+* _Program Counter_
+* _Stack Pointer_
+* _Priority_
 
 __Kernel-level__ vs __User-level__ threads
 * Kernel-level
-	* `Advantages` Takes advantage of multiprocessors
-	* `Disadvantages` More overhead due to mode switching from _user to kernel mode_
+	* `Advantages` - Takes advantage of multiprocessors
+	* `Disadvantages` - More overhead due to mode switching from _user to kernel mode_
 * User-level
-	* `Advantages` Can be more efficient than kernel-level threads since there is no need to even do a mode switch into the kernel.
-	* `Disadvantages` If one thread blocks on a system call, then the entire process is blocked and no threads within that process get to run.
+	* `Advantages` - Can be more efficient than kernel-level threads since there is no need to even do a mode switch into the kernel.
+	* `Disadvantages` - If one thread blocks on a system call, then the entire process is blocked and no threads within that process get to run.
 
 __Hybrid Kernel/User Mode__  
 * Threading models can be combined and user-level thread libraries can be used with operating systems that offer kernel threads.
 * Maps `N` user-level threads onto `M` kernel-level threads.
 
 __Join__ vs __Fork/Wait__
-* `Wait` A parent process waits for the termination of a child process.
-* `Join` Any on thread within a process can wait for any other thread to terminate.
+* `Wait` - A parent process waits for the termination of a child process.
+* `Join` - Any on thread within a process can wait for any other thread to terminate.
 * There is _NO_ parent-child relationship in threads. 
 
 Synchronization
 ===
 
+__Definitions__
+* `Concurrent` - where threads (or processes) exist at the same time
+* `Asynchronous` - where threads (or processes) need to synchronize with each other occasionally
+* `Independent` - where threads (or processes) have no dependence on each other
+* `Synchronous` - where threads (or processes) need to synchronize frequently so that their relative order of execution is guaranteed
+* `Critical Section`
+* `Mutual Exclusion`
+* `Deadlock`
+* `Stravation`
+
+__What is a race condition?__   
+
+__What is a spinlock (busy waiting)?__   
+
+__Problems with disabling interrupts__  
+
+__Problems with test and set locks in software__   
+
+__Test and set instruction__ : how does it work?   
+
+__Compare and swap instruction__ : how does it work?   
 
