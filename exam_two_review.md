@@ -225,7 +225,7 @@ __Writeback journaling__
 * Recently modified files can be corrupted after a crash.
 * Its' the fastest of the journaling options and the weakest (due to data corruption).
 
-__Linux ext4__
+__Linux ext4__  
 1. __Extent-based allocation__
   * Contains the starting cluster number of a group of clusters along with a cluster count.
 2. __Delayed allocation of disk space__
