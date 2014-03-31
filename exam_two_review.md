@@ -52,7 +52,7 @@ __Page table__ is the data structure used by a virtual memory system in the OS t
 * The __page residence bit__ indicates whether that specific page is mapped onto a page frame.
 * A __page fault__ is generated if the page is not mapped onto a page frame.
 
-A __translation lookaside buffer_ (TLB) is used to store recently-accessed page numbers and their corresponding PTEs.
+A __translation lookaside buffer__ (TLB) is used to store recently-accessed page numbers and their corresponding PTEs.
 * Method: employs an __address space identifier__ (ASID) to identify the process to whom an entry belongs.
 * The __hit ratio__ is the percentage of memory references that can be satisifed from the TLB without resorting to a page table lookup.
 
