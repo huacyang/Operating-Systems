@@ -115,22 +115,22 @@ The __minor number__ identifies which specific instance of a device is being acc
 
 ## Execution Contexts
 
-Any kernel code is running in one of three contexts:
-1. __Interrupt context__: this is invoked by the spontaneous change in the flow of execution when a hardware interrupt takes place.
-  - Cannot be blocked because there is no process that requested the action that could be put to sleep and scheduled to wake up when an operation is complete.
-2. __User context__: this is the flow of control when a user process invokes a system call.
-  - The mode switch to kernel mode, but the context is still that of a user process.
-  - The kernel may schedule an I/O operation, putting the process into a _blocked_ state, and context switch to another process.
-3. __Kernel context__: the kernel itself has one or more worker threads that is schedules just like any other process.
+Any kernel code is running in one of three contexts:  
+1. __Interrupt context__: this is invoked by the spontaneous change in the flow of execution when a hardware interrupt takes place.  
+  - Cannot be blocked because there is no process that requested the action that could be put to sleep and scheduled to wake up when an operation is complete.  
+2. __User context__: this is the flow of control when a user process invokes a system call.  
+  - The mode switch to kernel mode, but the context is still that of a user process.  
+  - The kernel may schedule an I/O operation, putting the process into a _blocked_ state, and context switch to another process.  
+3. __Kernel context__: the kernel itself has one or more worker threads that is schedules just like any other process.  
   - May be blocked.
 
 ## Device Drivers
 
-To ensure that the interrupt context does not take too long (due to unable to block), it is split into two parts:
-1. The __top half__ of a driver is the interrupt service routine that is registered with the interrupt handler.
-  - It tries to do as little as possible -- generally grabbing data, placing it into a __work queue__ (a buffer).
-2. The __bottom half__ of a driver is the part that is scheduled by the top half for later execution.
-  - It runs in a kernel thread.
+To ensure that the interrupt context does not take too long (due to unable to block), it is split into two parts:  
+1. The __top half__ of a driver is the interrupt service routine that is registered with the interrupt handler.  
+  - It tries to do as little as possible -- generally grabbing data, placing it into a __work queue__ (a buffer).  
+2. The __bottom half__ of a driver is the part that is   scheduled by the top half for later execution.  
+  - It runs in a kernel thread.  
   - May perform blocking operations.
 
 A __device status table__ keeps track of devices and the current status of each device.
@@ -192,15 +192,15 @@ __Unix File System__ (UFS)
 * Uses a linked-list storage system.
 * Contains: a superblock, inode blocks, and data blocks.
 
-__Berkeley Fast File System__ (FFS)
-1. __Larger clusters__
-  - Brings about an eight-fold improvement in contiguous allocation.
-  - To avoid too much internal fragmentation from large cluster sizes, the last cluster of a file is a fragment.
-2. __Cylinder groups__
+__Berkeley Fast File System__ (FFS)  
+1. __Larger clusters__  
+  - Brings about an eight-fold improvement in contiguous allocation.  
+  - To avoid too much internal fragmentation from large cluster sizes, the last cluster of a file is a fragment.  
+2. __Cylinder groups__  
   - Multiple regions are created for inodes and other data.
-3. __Bitmap allocation__
-  - Instead of using a linked list of free blocks, a bitmap is used to keep track of which blocks are in use within each cylinder group.
-4. __Prefetch__
+3. __Bitmap allocation__  
+  - Instead of using a linked list of free blocks, a bitmap is used to keep track of which blocks are in use within each cylinder group.  
+4. __Prefetch__  
   - If two or more sequential blocks are read from a file, FFS assumes that the file access is sequential and will _prefetch_ additional blocks from that file.
 
 __Linux ext2__
@@ -226,10 +226,10 @@ __Writeback journaling__
 * Its' the fastest of the journaling options and the weakest (due to data corruption).
 
 __Linux ext4__  
-1. __Extent-based allocation__
-  * Contains the starting cluster number of a group of clusters along with a cluster count.
-2. __Delayed allocation of disk space__
-  * The blocks are kept in the buffer cache and allocated to physical blocks only when they are ready to be flushed.
+1. __Extent-based allocation__  
+  * Contains the starting cluster number of a group of clusters along with a cluster count.  
+2. __Delayed allocation of disk space__  
+  * The blocks are kept in the buffer cache and allocated to physical blocks only when they are ready to be flushed.  
   * Increases the chance of allocating contiguous blocks for a file.
 
 __Microsoft NTFS__
