@@ -117,10 +117,10 @@ The __minor number__ identifies which specific instance of a device is being acc
 
 Any kernel code is running in one of three contexts:  
 1. __Interrupt context__: this is invoked by the spontaneous change in the flow of execution when a hardware interrupt takes place.  
-  - Cannot be blocked because there is no process that requested the action that could be put to sleep and scheduled to wake up when an operation is complete.  
+  - Cannot be blocked because there is no process that requested the action that could be put to sleep and scheduled to wake up when an operation is complete.
 2. __User context__: this is the flow of control when a user process invokes a system call.  
-  - The mode switch to kernel mode, but the context is still that of a user process.  
-  - The kernel may schedule an I/O operation, putting the process into a _blocked_ state, and context switch to another process.  
+  - The mode switch to kernel mode, but the context is still that of a user process.
+  - The kernel may schedule an I/O operation, putting the process into a _blocked_ state, and context switch to another process.
 3. __Kernel context__: the kernel itself has one or more worker threads that is schedules just like any other process.  
   - May be blocked.
 
@@ -128,7 +128,7 @@ Any kernel code is running in one of three contexts:
 
 To ensure that the interrupt context does not take too long (due to unable to block), it is split into two parts:  
 1. The __top half__ of a driver is the interrupt service routine that is registered with the interrupt handler.  
-  - It tries to do as little as possible -- generally grabbing data, placing it into a __work queue__ (a buffer).  
+  - It tries to do as little as possible -- generally grabbing data, placing it into a __work queue__ (a buffer).
 2. The __bottom half__ of a driver is the part that is   scheduled by the top half for later execution.  
   - It runs in a kernel thread.  
   - May perform blocking operations.
